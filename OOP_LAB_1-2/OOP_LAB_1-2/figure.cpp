@@ -2,15 +2,21 @@
 
 bool QuadFigure::inside(POINT a, POINT b, POINT c, POINT check)
 {
-	double x1 = (a.x - check.x) * (b.y - a.y) * (b.x - a.x) * (a.y - check.y);
-	double x2 = (b.x - check.x) * (c.y - b.y) * (c.x - b.x) * (b.y - check.y);
-	double x3 = (c.x - check.x) * (a.y - a.y) * (a.x - a.x) * (c.y - check.y);
+	int x1 = (a.x - check.x) * (b.y - a.y) * (b.x - a.x) * (a.y - check.y);
+	int x2 = (b.x - check.x) * (c.y - b.y) * (c.x - b.x) * (b.y - check.y);
+	int x3 = (c.x - check.x) * (a.y - a.y) * (a.x - a.x) * (c.y - check.y);
 
 	return x1 > 0 && x2 > 0 && x3 > 0 || x1 < 0 && x2 < 0 && x3 < 0;
 }
 
-QuadFigure::QuadFigure(POINT *points, COLORREF pen_color, COLORREF brush_color, int depth_pen)
+QuadFigure::QuadFigure(POINT *points, COLORREF pen_color, COLORREF brush_color, int depth_pen, int pen_style, int brush_style)
 {
+	for (int i = 0; i < 4; i++)
+	{
+		if (points[i].x < 0 || points[i].y < 0)
+			throw 0;
+	}
+
 	for (int i = 0; i < 4; i++)
 	{
 		if (inside(points[(i + 1) % 4], points[(i + 2) % 4], points[(i + 3) % 4], points[i]))
@@ -23,6 +29,20 @@ QuadFigure::QuadFigure(POINT *points, COLORREF pen_color, COLORREF brush_color, 
 	this->pen_color = pen_color;
 	this->brush_color = brush_color;
 	this->depth_pen = depth_pen;
+	this->pen_style = pen_style;
+	this->brush_style = brush_style;
+}
+
+QuadFigure::QuadFigure()
+{
+	for (int i = 0; i < 4; i++)
+		points[i] = { 0, 0 };
+
+	pen_color = RGB(0, 0, 0);
+	brush_color = RGB(0, 0, 0);
+	depth_pen = 0;
+	pen_style = PS_SOLID;
+	brush_style = HS_BDIAGONAL;
 }
 
 // set
@@ -76,6 +96,20 @@ int QuadFigure::set_depth_pen(int value)
 	return 0;
 }
 
+int QuadFigure::set_pen_style(int pen_style)
+{
+	this->pen_style = pen_style;
+
+	return 0;
+}
+
+int QuadFigure::set_brush_style(int brush_style)
+{
+	this->brush_style = brush_style;
+
+	return 0;
+}
+
 // get
 POINT QuadFigure::get_point(int number) 
 {
@@ -112,12 +146,14 @@ int QuadFigure::move(int x, int y)
 	return 0;
 }
 
-int QuadFigure::draw(HDC& hdc)
+int QuadFigure::draw(HDC& hdc, HWND hwnd)
 {
 
+
+	return 0;
 }
 
 int QuadFigure::save(char* namefile)
 {
-	
+	return 0;
 }

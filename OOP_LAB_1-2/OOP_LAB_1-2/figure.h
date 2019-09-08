@@ -11,9 +11,12 @@ private:
 	COLORREF pen_color;
 	COLORREF brush_color;
 	int depth_pen;
+	bool inside(POINT a, POINT b, POINT c, POINT check);
 public:
+	QuadFigure(POINT *points, COLORREF pen_color, COLORREF brush_color, int depth_pen);
 	// set
 	int set_point(int number, int x, int y);
+	int set_points(POINT *point);
 	int set_pen_color(int R, int G, int B);
 	int set_brush_color(int R, int G, int B);
 	int set_depth_pen(int value);

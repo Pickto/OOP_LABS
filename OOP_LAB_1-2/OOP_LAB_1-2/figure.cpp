@@ -200,9 +200,11 @@ void QuadFigure::draw_figuration(HWND hwnd, HDC hdc)
 
 	HPEN pen = CreatePen(pen_style, depth_pen, pen_color);
 	
-	SelectPen(hdc, pen);
+	pen = SelectPen(hdc, pen);
 
 	Polygon(hdc, points, 4);
+
+	SelectPen(hdc, pen);
 }
 
 void QuadFigure::draw_painted(HWND hwnd, HDC hdc)
@@ -214,9 +216,11 @@ void QuadFigure::draw_painted(HWND hwnd, HDC hdc)
 	else
 		brush = CreateHatchBrush(brush_style, brush_color);
 
-	SelectBrush(hdc, brush);
+	brush = SelectBrush(hdc, brush);
 
 	draw_figuration(hwnd, hdc);
+
+	SelectBrush(hdc, brush);
 }
 
 void QuadFigure::save(std::string namefile)
@@ -236,12 +240,12 @@ void QuadFigure::save(std::string namefile)
 	file << "\nSTYLES\npen " << get_pen_style() << "\n";
 	file << "brush " << get_brush_style();
 }
-bool QuadFigure::read(std::string namefile)
+void QuadFigure::read(std::string namefile)
 {
 	std::ifstream file(namefile);
 
 	if (!file.is_open())
-		return false;
+		throw "Can not open file ";
 
 	std::string read;
 	int x, y, R, G, B, depth, read_hash;
@@ -356,8 +360,6 @@ bool QuadFigure::read(std::string namefile)
 	}
 
 	file.close();
-
-	return 0;
 }
 bool QuadFigure::is_child(QuadFigure& other_fig)
 {

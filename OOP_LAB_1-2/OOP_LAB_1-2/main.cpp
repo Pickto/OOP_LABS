@@ -4,28 +4,29 @@
 int main()
 {
 	HWND hwnd = GetConsoleWindow();
-	//HWND hwnd = FindWindow(TEXT("notepad"), TEXT("Áåçûìÿííûé — Áëîêíîò"));
+	//HWND hwnd = FindWindow(TEXT("notepad"), TEXT("Безымянный — Блокнот"));
 	HDC hdc = GetDC(hwnd);
-	SetBkColor(hdc, RGB(0, 0, 0));
 
 	QuadFigure fig;
 	QuadFigure other_fig;
+	std::string command = "";
 
-	while (true)
+	while (command != "quit")
 	{
 		try
 		{
 			RECT rt;
 			GetClientRect(hwnd, &rt);
-			std::string command;
 			std::cin >> command;
 			FillRect(hdc, &rt, (HBRUSH)(COLOR_WINDOW + 1));
+			
 			if (command == "draw_one")
 			{
 				std::string param;
 				std::string namefile;
 				std::cin >> param >> namefile;
 				fig.read(namefile);
+
 				if (param == "empty")
 					fig.draw_figuration(hwnd, hdc);
 				else if (param == "full")
@@ -38,6 +39,7 @@ int main()
 				std::cin >> param_a >> namefile_a >> param_b >> namefile_b;
 				fig.read(namefile_a);
 				other_fig.read(namefile_b);
+
 				if (fig.is_child(other_fig))
 				{
 					if (param_b == "full")
@@ -69,14 +71,11 @@ int main()
 				int x, y;
 				std::cin >> param >> x >> y;
 				fig.move(x, y);
+
 				if (param == "empty")
 					fig.draw_figuration(hwnd, hdc);
 				else if (param == "full")
 					fig.draw_painted(hwnd, hdc);
-			}
-			else if (command == "quit")
-			{
-				break;
 			}
 		}
 		catch (const char* error)
@@ -84,6 +83,7 @@ int main()
 			std::cout << "error: " << error << std::endl;
 		}
 	}
+
 	ReleaseDC(hwnd, hdc);
 
 	return 0;

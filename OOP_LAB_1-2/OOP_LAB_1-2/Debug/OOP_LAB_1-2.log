@@ -1,6 +1,2 @@
-﻿  figure.cpp
-  main.cpp
-  Создание кода...
-D:\c++\OOP_LABS\OOP_LAB_1-2\OOP_LAB_1-2\main.cpp(27,20): warning C4018:  <: несоответствие типов со знаком и без знака
-D:\c++\OOP_LABS\OOP_LAB_1-2\OOP_LAB_1-2\figure.cpp(159): warning C4715:  QuadFigure::get_pen_style: значение возвращается не при всех путях выполнения
-  OOP_LAB_1-2.vcxproj -> D:\c++\OOP_LABS\OOP_LAB_1-2\Debug\OOP_LAB_1-2.exe
+﻿  main.cpp
+  OOP_LAB_1-2.vcxproj -> C:\Users\Pickto\source\repos\OOP_LABS\OOP_LAB_1-2\Debug\OOP_LAB_1-2.exe

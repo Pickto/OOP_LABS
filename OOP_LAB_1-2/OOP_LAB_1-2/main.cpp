@@ -1,182 +1,93 @@
 #include <iostream>
 #include "figure.h"
+#include "utils.h"
 
-#define HASH_POINTS 1687
-#define HASH_COLORS 1677
-#define HASH_PEN 644
-#define HASH_BRUSH 1657
-#define HASH_DEPTH 1142
-#define HASH_STYLES 1665
-#define HASH_PS_SOLID 2769
-#define HASH_PS_DASH 2130
-#define HASH_PS_DOT 1702
-#define HASH_PS_DASHDOT 4225
-#define HASH_PS_DASHDOTDOT 7013
-#define HASH_PS_NULL 2256
-#define HASH_PS_INSIDEFRAME 7736
-#define HASH_HS_BDIAGONAL 5706
-#define HASH_HS_CROSS 2920
-#define HASH_HS_DIAGCROSS 6020
-#define HASH_HS_FDIAGONAL 5722
-#define HASH_HS_HORIZONTAL 7112
-#define HASH_HS_VERTICAL 4965
+LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-int hash_string(std::string string)
+int main(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdShow)
 {
-	int hash = 0;
-	for (int i = 0; i < string.size(); i++)
-		hash += (i + 1) * string[i];
+	LPCSTR CLASS_NAME = "Sample Window Class";
 
-	return hash;
-}
+	WNDCLASS wc = { };
 
-bool read_from_file(const char* namefile, QuadFigure &figure)
-{
-	std::ifstream file(namefile);
+	wc.lpfnWndProc = WindowProc;
+	wc.hInstance = hInstance;
+	wc.lpszClassName = CLASS_NAME;
 
-	if (!file.is_open())
-		return false;
+	RegisterClass(&wc);
 
-	std::string read;
-	int x, y, R, G, B, depth, read_hash;
+	std::string command;
+	bool isRunning = true;
 
-	while (file >> read)
+	while (isRunning)
 	{
-		read_hash = hash_string(read);
-
-		switch (read_hash)
+		std::getline(std::cin, command);
+		if (command == "draw contur")
 		{
-		case HASH_POINTS:
-			for (int i = 0; i < 4; i++)
+			// Create the window
+			HWND hwnd = CreateWindowEx(
+				0,                              // Optional window styles.
+				CLASS_NAME,                     // Window class
+				"Learn to Program Windows",    // Window text
+				WS_OVERLAPPEDWINDOW,            // Window style
+
+				// Size and position
+				CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
+
+				NULL,       // Parent window    
+				NULL,       // Menu
+				hInstance,  // Instance handle
+				NULL        // Additional application data
+			);
+			ShowWindow(hwnd, nCmdShow);
+
+			QuadFigure fig;
+			read_from_file("test.txt", fig);
+
+			MSG msg = { };
+
+			while (GetMessage(&msg, NULL, 0, 0))
 			{
-				file >> x >> read >> y;
-				figure.set_point(i, x, y);
-			}
-			break;
-
-		case HASH_PEN:
-			file >> R >> read >> G >> read >> B;
-			figure.set_pen_color(R, G, B);
-			break;
-
-		case HASH_BRUSH:
-			file >> R >> read >> G >> read >> B;
-			figure.set_brush_color(R, G, B);
-			break;
-
-		case HASH_DEPTH:
-			file >> depth;
-			figure.set_depth_pen(depth);
-			break;
-
-		case HASH_STYLES:
-			file >> read;
-
-			if (read == "pen")
-			{
-				file >> read;
-
-				read_hash = hash_string(read);
-
-				switch (read_hash)
+				HDC hdc = GetDC(hwnd);
+				try
 				{
-				case HASH_PS_SOLID:
-					figure.set_pen_style(PS_SOLID);
-					break;
-
-				case HASH_PS_DASH:
-					figure.set_pen_style(PS_DASH);
-					break;
-
-				case HASH_PS_DOT:
-					figure.set_pen_style(PS_DOT);
-					break;
-
-				case HASH_PS_DASHDOT:
-					figure.set_pen_style(PS_DASHDOT);
-					break;
-
-				case HASH_PS_DASHDOTDOT:
-					figure.set_pen_style(PS_DASHDOTDOT);
-					break;
-
-				case HASH_PS_NULL:
-					figure.set_pen_style(PS_NULL);
-					break;
-
-				case HASH_PS_INSIDEFRAME:
-					figure.set_pen_style(PS_INSIDEFRAME);
-					break;
+					fig.draw_figuration(hdc, hwnd);
 				}
-			}
-
-			file >> read;
-
-			if (read == "brush")
-			{
-				file >> read;
-
-				read_hash = hash_string(read);
-
-				switch (read_hash)
+				catch (const char* error)
 				{
-				case HASH_HS_BDIAGONAL:
-					figure.set_brush_style(HS_BDIAGONAL);
-					break;
-
-				case HASH_HS_CROSS:
-					figure.set_brush_style(HS_CROSS);
-					break;
-
-				case HASH_HS_DIAGCROSS:
-					figure.set_brush_style(HS_DIAGCROSS);
-					break;
-
-				case HASH_HS_FDIAGONAL:
-					figure.set_brush_style(HS_FDIAGONAL);
-					break;
-
-				case HASH_HS_HORIZONTAL:
-					figure.set_brush_style(HS_HORIZONTAL);
-					break;
-
-				case HASH_HS_VERTICAL:
-					figure.set_brush_style(HS_VERTICAL);
-					break;
+					std::cout << "error: " << error << std::endl;
 				}
+				ReleaseDC(hwnd, hdc);
+				TranslateMessage(&msg);
+				DispatchMessage(&msg);
 			}
-			break;
 		}
+		else if (command == "quit" || command == "q")
+			isRunning = false;
 	}
-
-	file.close();
-
 	return 0;
 }
 
-int main()
+LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	HWND hwnd = GetConsoleWindow();
-	//HWND hwnd = FindWindow(TEXT("notepad"), TEXT("Безымянный — Блокнот"));
-	HDC hdc = GetDC(hwnd);
-	SetBkColor(hdc, RGB(0, 0, 0));
-
-	QuadFigure fig;
-
-	try
+	switch (uMsg)
 	{
-		read_from_file("test.txt", fig);
-
-		fig.draw_figuration(hdc, hwnd);
-		fig.move(150, 0);
-		fig.draw_painted(hdc, hwnd);
-	}
-	catch (const char* error)
+	case WM_DESTROY:
+		PostQuitMessage(0);
+		return 0;
+	case WM_PAINT:
 	{
-		std::cout << "error: " << error << std::endl;
+		PAINTSTRUCT ps;
+		HDC hdc = BeginPaint(hwnd, &ps);
+
+		// All painting occurs here, between BeginPaint and EndPaint.
+
+		FillRect(hdc, &ps.rcPaint, (HBRUSH)(COLOR_WINDOW + 1));
+
+		EndPaint(hwnd, &ps);
 	}
-
-	ReleaseDC(hwnd, hdc);
-
 	return 0;
+
+	}
+	return DefWindowProc(hwnd, uMsg, wParam, lParam);
 }

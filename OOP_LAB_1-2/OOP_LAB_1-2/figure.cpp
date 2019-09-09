@@ -219,7 +219,7 @@ void QuadFigure::draw_painted(HWND hwnd, HDC hdc)
 	draw_figuration(hwnd, hdc);
 }
 
-void QuadFigure::save(const char* namefile)
+void QuadFigure::save(std::string namefile)
 {
 	std::ofstream file(namefile);
 
@@ -236,7 +236,129 @@ void QuadFigure::save(const char* namefile)
 	file << "\nSTYLES\npen " << get_pen_style() << "\n";
 	file << "brush " << get_brush_style();
 }
+bool QuadFigure::read(std::string namefile)
+{
+	std::ifstream file(namefile);
 
+	if (!file.is_open())
+		return false;
+
+	std::string read;
+	int x, y, R, G, B, depth, read_hash;
+
+	while (file >> read)
+	{
+		read_hash = hash_string(read);
+
+		switch (read_hash)
+		{
+		case HASH_POINTS:
+			for (int i = 0; i < 4; i++)
+			{
+				file >> x >> read >> y;
+				set_point(i, x, y);
+			}
+			break;
+
+		case HASH_PEN:
+			file >> R >> read >> G >> read >> B;
+			set_pen_color(R, G, B);
+			break;
+
+		case HASH_BRUSH:
+			file >> R >> read >> G >> read >> B;
+			set_brush_color(R, G, B);
+			break;
+
+		case HASH_DEPTH:
+			file >> depth;
+			set_depth_pen(depth);
+			break;
+
+		case HASH_STYLES:
+			file >> read;
+
+			if (read == "pen")
+			{
+				file >> read;
+
+				read_hash = hash_string(read);
+
+				switch (read_hash)
+				{
+				case HASH_PS_SOLID:
+					set_pen_style(PS_SOLID);
+					break;
+
+				case HASH_PS_DASH:
+					set_pen_style(PS_DASH);
+					break;
+
+				case HASH_PS_DOT:
+					set_pen_style(PS_DOT);
+					break;
+
+				case HASH_PS_DASHDOT:
+					set_pen_style(PS_DASHDOT);
+					break;
+
+				case HASH_PS_DASHDOTDOT:
+					set_pen_style(PS_DASHDOTDOT);
+					break;
+
+				case HASH_PS_NULL:
+					set_pen_style(PS_NULL);
+					break;
+
+				case HASH_PS_INSIDEFRAME:
+					set_pen_style(PS_INSIDEFRAME);
+					break;
+				}
+			}
+
+			file >> read;
+
+			if (read == "brush")
+			{
+				file >> read;
+
+				read_hash = hash_string(read);
+
+				switch (read_hash)
+				{
+				case HASH_HS_BDIAGONAL:
+					set_brush_style(HS_BDIAGONAL);
+					break;
+
+				case HASH_HS_CROSS:
+					set_brush_style(HS_CROSS);
+					break;
+
+				case HASH_HS_DIAGCROSS:
+					set_brush_style(HS_DIAGCROSS);
+					break;
+
+				case HASH_HS_FDIAGONAL:
+					set_brush_style(HS_FDIAGONAL);
+					break;
+
+				case HASH_HS_HORIZONTAL:
+					set_brush_style(HS_HORIZONTAL);
+					break;
+
+				case HASH_HS_VERTICAL:
+					set_brush_style(HS_VERTICAL);
+					break;
+				}
+			}
+			break;
+		}
+	}
+
+	file.close();
+
+	return 0;
+}
 bool QuadFigure::is_child(QuadFigure& other_fig)
 {
 	for (int i = 0; i < 4; i++)

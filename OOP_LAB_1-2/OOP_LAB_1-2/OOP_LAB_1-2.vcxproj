@@ -125,12 +125,11 @@
   <ItemGroup>
     <ClInclude Include="figure.h" />
     <ClInclude Include="hash.h" />
-    <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="figure.cpp" />
+    <ClCompile Include="hash.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="other_test.txt" />

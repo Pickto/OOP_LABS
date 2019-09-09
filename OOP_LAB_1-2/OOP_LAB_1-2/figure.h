@@ -5,6 +5,7 @@
 #include <conio.h>
 #include <fstream>
 #include <string>
+#include "hash.h"
 
 class QuadFigure
 {
@@ -39,7 +40,8 @@ public:
 	void move(int x, int y);
 	void draw_figuration(HWND hwnd, HDC hdc); // рисует контур
 	void draw_painted(HWND hwnd, HDC hdc); // рисует закрашенную 
-	void save(const char* namefile);
+	void save(std::string namefile);
+	bool read(std::string namefile);
 	bool is_child(QuadFigure& other_fig);
 };
 

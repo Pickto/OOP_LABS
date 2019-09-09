@@ -1,3 +1,2 @@
-﻿  figure.cpp
-C:\Users\Pickto\source\repos\OOP_LABS\OOP_LAB_1-2\OOP_LAB_1-2\figure.cpp(145): warning C4715:  QuadFigure::get_pen_style: значение возвращается не при всех путях выполнения
+﻿  main.cpp
   OOP_LAB_1-2.vcxproj -> C:\Users\Pickto\source\repos\OOP_LABS\OOP_LAB_1-2\x64\Debug\OOP_LAB_1-2.exe

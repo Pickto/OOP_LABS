@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 #define HASH_POINTS 1687
 #define HASH_COLORS 1677
 #define HASH_PEN 644
@@ -18,3 +19,5 @@
 #define HASH_HS_FDIAGONAL 5722
 #define HASH_HS_HORIZONTAL 7112
 #define HASH_HS_VERTICAL 4965
+
+int hash_string(std::string str);

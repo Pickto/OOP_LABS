@@ -1,0 +1,17 @@
+POINTS
+100, 100
+200, 100
+200, 200
+100, 200
+
+
+
+COLORS
+pen 0, 255, 100
+brush 200, 0, 255
+
+DEPTH
+4
+
+STYLES
+pen PS_DASH

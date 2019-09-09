@@ -1,31 +1,12 @@
 #include "figure.h"
 
-bool QuadFigure::inside(POINT a, POINT b, POINT c, POINT check)
+bool QuadFigure::inside_triangle(POINT a, POINT b, POINT c, POINT check)
 {
 	int x1 = (a.x - check.x) * (b.y - a.y) - (b.x - a.x) * (a.y - check.y);
 	int x2 = (b.x - check.x) * (c.y - b.y) - (c.x - b.x) * (b.y - check.y);
 	int x3 = (c.x - check.x) * (a.y - c.y) - (a.x - c.x) * (c.y - check.y);
 
 	return x1 >= 0 && x2 >= 0 && x3 >= 0 || x1 <= 0 && x2 <= 0 && x3 <= 0;
-}
-
-QuadFigure::QuadFigure(POINT* points, COLORREF pen_color, COLORREF brush_color, int depth_pen, int pen_style, int brush_style)
-{
-	// check convexity
-	for (int i = 0; i < 4; i++)
-	{
-		if (inside(points[(i + 1) % 4], points[(i + 2) % 4], points[(i + 3) % 4], points[i]))
-			throw "non-convex figure";
-	}
-
-	for (int i = 0; i < 4; i++)
-		set_point(i, points[i].x, points[i].y);
-
-	this->pen_color = pen_color;
-	this->brush_color = brush_color;
-	set_depth_pen(depth_pen);
-	set_pen_style(pen_style);
-	set_brush_style(brush_style);
 }
 
 QuadFigure::QuadFigure()
@@ -38,6 +19,25 @@ QuadFigure::QuadFigure()
 	depth_pen = 0;
 	pen_style = PS_SOLID;
 	brush_style = -1;
+}
+
+QuadFigure::QuadFigure(POINT* points, COLORREF pen_color, COLORREF brush_color, int depth_pen, int pen_style, int brush_style)
+{
+	// check convexity
+	for (int i = 0; i < 4; i++)
+	{
+		if (inside_triangle(points[(i + 1) % 4], points[(i + 2) % 4], points[(i + 3) % 4], points[i]))
+			throw "non-convex figure";
+	}
+
+	for (int i = 0; i < 4; i++)
+		set_point(i, points[i].x, points[i].y);
+
+	this->pen_color = pen_color;
+	this->brush_color = brush_color;
+	set_depth_pen(depth_pen);
+	set_pen_style(pen_style);
+	set_brush_style(brush_style);
 }
 
 // set мб возвращать старые значения
@@ -90,7 +90,7 @@ void QuadFigure::set_pen_style(int pen_style)
 
 void QuadFigure::set_brush_style(int brush_style)
 {
-	if (brush_style < HS_HORIZONTAL || brush_style > HS_DIAGCROSS)
+	if ((brush_style < HS_HORIZONTAL || brush_style > HS_DIAGCROSS) && brush_style != -1)
 		throw "Invalid brush style";
 
 	this->brush_style = brush_style;
@@ -184,14 +184,14 @@ void QuadFigure::move(int x, int y)
 	}
 }
 
-void QuadFigure::draw_figuration(HDC hdc, HWND hwnd)
+void QuadFigure::draw_figuration(HWND hwnd, HDC hdc)
 {
 	RECT size_window;
 	GetClientRect(hwnd, &size_window);
 
 	for (int i = 0; i < 4; i++)
 	{
-		if (inside(points[(i + 1) % 4], points[(i + 2) % 4], points[(i + 3) % 4], points[i]))
+		if (inside_triangle(points[(i + 1) % 4], points[(i + 2) % 4], points[(i + 3) % 4], points[i]))
 			throw "non-convex figure";
 
 		if (points[i].x > size_window.right || points[i].y > size_window.bottom)
@@ -205,7 +205,7 @@ void QuadFigure::draw_figuration(HDC hdc, HWND hwnd)
 	Polygon(hdc, points, 4);
 }
 
-void QuadFigure::draw_painted(HDC hdc, HWND hwnd)
+void QuadFigure::draw_painted(HWND hwnd, HDC hdc)
 {
 	HBRUSH brush;
 
@@ -216,7 +216,7 @@ void QuadFigure::draw_painted(HDC hdc, HWND hwnd)
 
 	SelectBrush(hdc, brush);
 
-	draw_figuration(hdc, hwnd);
+	draw_figuration(hwnd, hdc);
 }
 
 void QuadFigure::save(const char* namefile)
@@ -235,4 +235,16 @@ void QuadFigure::save(const char* namefile)
 	file << "\nDEPTH\n" << depth_pen << "\n";
 	file << "\nSTYLES\npen " << get_pen_style() << "\n";
 	file << "brush " << get_brush_style();
+}
+
+bool QuadFigure::is_child(QuadFigure& other_fig)
+{
+	for (int i = 0; i < 4; i++)
+	{
+		if (!inside_triangle(other_fig.points[0], other_fig.points[1], other_fig.points[2], points[i]) &&
+			!inside_triangle(other_fig.points[2], other_fig.points[3], other_fig.points[0], points[i]))
+			return false;
+	}
+
+	return true;
 }

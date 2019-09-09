@@ -21,10 +21,10 @@ public:
 	QuadFigure();
 	QuadFigure(POINT* points, COLORREF pen_color, COLORREF brush_color, int depth_pen, int pen_style, int brush_style);
 	// set
-	void set_point(int number, int x, int y);
-	void set_points(POINT* point);
-	void set_pen_color(int R, int G, int B);
-	void set_brush_color(int R, int G, int B);
+	void set_point(int number, int x, int y); // изменяет положение одной точки под номером number
+	void set_points(POINT* point); // изменяет все точки
+	void set_pen_color(int R, int G, int B); // изменяет цвет пера
+	void set_brush_color(int R, int G, int B); // изменяет цвет кисти
 	void set_depth_pen(int value);
 	void set_pen_style(int pen_style);
 	void set_brush_style(int brush_style);
@@ -37,8 +37,8 @@ public:
 	const char* get_brush_style();
 	// other
 	void move(int x, int y);
-	void draw_figuration(HDC hdc, HWND hwnd);
-	void draw_painted(HDC hdc, HWND hwnd);
+	void draw_figuration(HDC hdc, HWND hwnd); // рисует контур
+	void draw_painted(HDC hdc, HWND hwnd); // рисует закрашенную 
 	void save(const char* namefile);
 };
 

@@ -9,6 +9,18 @@ bool QuadFigure::inside(POINT a, POINT b, POINT c, POINT check)
 	return x1 >= 0 && x2 >= 0 && x3 >= 0 || x1 <= 0 && x2 <= 0 && x3 <= 0;
 }
 
+QuadFigure::QuadFigure()
+{
+	for (int i = 0; i < 4; i++)
+		points[i] = { 0, 0 };
+
+	pen_color = RGB(255, 255, 255);
+	brush_color = RGB(0, 0, 0);
+	depth_pen = 0;
+	pen_style = PS_SOLID;
+	brush_style = -1;
+}
+
 QuadFigure::QuadFigure(POINT* points, COLORREF pen_color, COLORREF brush_color, int depth_pen, int pen_style, int brush_style)
 {
 	// check convexity
@@ -26,18 +38,6 @@ QuadFigure::QuadFigure(POINT* points, COLORREF pen_color, COLORREF brush_color, 
 	set_depth_pen(depth_pen);
 	set_pen_style(pen_style);
 	set_brush_style(brush_style);
-}
-
-QuadFigure::QuadFigure()
-{
-	for (int i = 0; i < 4; i++)
-		points[i] = { 0, 0 };
-
-	pen_color = RGB(255, 255, 255);
-	brush_color = RGB(0, 0, 0);
-	depth_pen = 0;
-	pen_style = PS_SOLID;
-	brush_style = -1;
 }
 
 // set мб возвращать старые значения
@@ -90,7 +90,7 @@ void QuadFigure::set_pen_style(int pen_style)
 
 void QuadFigure::set_brush_style(int brush_style)
 {
-	if (brush_style < HS_HORIZONTAL || brush_style > HS_DIAGCROSS)
+	if ((brush_style < HS_HORIZONTAL || brush_style > HS_DIAGCROSS) && brush_style != -1)
 		throw "Invalid brush style";
 
 	this->brush_style = brush_style;
@@ -235,4 +235,9 @@ void QuadFigure::save(const char* namefile)
 	file << "\nDEPTH\n" << depth_pen << "\n";
 	file << "\nSTYLES\npen " << get_pen_style() << "\n";
 	file << "brush " << get_brush_style();
+}
+
+bool QuadFigure::is_child(POINT* other_points)
+{
+	return false;
 }

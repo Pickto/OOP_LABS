@@ -19,7 +19,7 @@ private:
 	bool inside(POINT a, POINT b, POINT c, POINT check);
 public:
 	QuadFigure();
-	QuadFigure(POINT* points, COLORREF pen_color, COLORREF brush_color, int depth_pen, int pen_style, int brush_style);
+	QuadFigure(POINT* points, COLORREF pen_color, COLORREF brush_color, int depth_pen, int pen_style = PS_SOLID, int brush_style = -1);
 	// set
 	void set_point(int number, int x, int y); // изменяет положение одной точки под номером number
 	void set_points(POINT* point); // изменяет все точки
@@ -40,5 +40,6 @@ public:
 	void draw_figuration(HDC hdc, HWND hwnd); // рисует контур
 	void draw_painted(HDC hdc, HWND hwnd); // рисует закрашенную 
 	void save(const char* namefile);
+	bool is_child(POINT* other_points);
 };
 

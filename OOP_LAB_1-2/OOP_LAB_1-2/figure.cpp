@@ -1,6 +1,6 @@
 #include "figure.h"
 
-bool QuadFigure::inside(POINT a, POINT b, POINT c, POINT check)
+bool QuadFigure::inside_triangle(POINT a, POINT b, POINT c, POINT check)
 {
 	int x1 = (a.x - check.x) * (b.y - a.y) - (b.x - a.x) * (a.y - check.y);
 	int x2 = (b.x - check.x) * (c.y - b.y) - (c.x - b.x) * (b.y - check.y);
@@ -26,7 +26,7 @@ QuadFigure::QuadFigure(POINT* points, COLORREF pen_color, COLORREF brush_color, 
 	// check convexity
 	for (int i = 0; i < 4; i++)
 	{
-		if (inside(points[(i + 1) % 4], points[(i + 2) % 4], points[(i + 3) % 4], points[i]))
+		if (inside_triangle(points[(i + 1) % 4], points[(i + 2) % 4], points[(i + 3) % 4], points[i]))
 			throw "non-convex figure";
 	}
 
@@ -184,14 +184,14 @@ void QuadFigure::move(int x, int y)
 	}
 }
 
-void QuadFigure::draw_figuration(HDC hdc, HWND hwnd)
+void QuadFigure::draw_figuration(HWND hwnd, HDC hdc)
 {
 	RECT size_window;
 	GetClientRect(hwnd, &size_window);
 
 	for (int i = 0; i < 4; i++)
 	{
-		if (inside(points[(i + 1) % 4], points[(i + 2) % 4], points[(i + 3) % 4], points[i]))
+		if (inside_triangle(points[(i + 1) % 4], points[(i + 2) % 4], points[(i + 3) % 4], points[i]))
 			throw "non-convex figure";
 
 		if (points[i].x > size_window.right || points[i].y > size_window.bottom)
@@ -205,7 +205,7 @@ void QuadFigure::draw_figuration(HDC hdc, HWND hwnd)
 	Polygon(hdc, points, 4);
 }
 
-void QuadFigure::draw_painted(HDC hdc, HWND hwnd)
+void QuadFigure::draw_painted(HWND hwnd, HDC hdc)
 {
 	HBRUSH brush;
 
@@ -216,7 +216,7 @@ void QuadFigure::draw_painted(HDC hdc, HWND hwnd)
 
 	SelectBrush(hdc, brush);
 
-	draw_figuration(hdc, hwnd);
+	draw_figuration(hwnd, hdc);
 }
 
 void QuadFigure::save(const char* namefile)
@@ -237,7 +237,14 @@ void QuadFigure::save(const char* namefile)
 	file << "brush " << get_brush_style();
 }
 
-bool QuadFigure::is_child(POINT* other_points)
+bool QuadFigure::is_child(QuadFigure& other_fig)
 {
-	return false;
+	for (int i = 0; i < 4; i++)
+	{
+		if (!inside_triangle(other_fig.points[0], other_fig.points[1], other_fig.points[2], points[i]) &&
+			!inside_triangle(other_fig.points[2], other_fig.points[3], other_fig.points[0], points[i]))
+			return false;
+	}
+
+	return true;
 }

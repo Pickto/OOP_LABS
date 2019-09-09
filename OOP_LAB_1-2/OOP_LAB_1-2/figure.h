@@ -16,7 +16,7 @@ private:
 	int pen_style;
 	int brush_style;
 
-	bool inside(POINT a, POINT b, POINT c, POINT check);
+	bool inside_triangle(POINT a, POINT b, POINT c, POINT check);
 public:
 	QuadFigure();
 	QuadFigure(POINT* points, COLORREF pen_color, COLORREF brush_color, int depth_pen, int pen_style = PS_SOLID, int brush_style = -1);
@@ -37,9 +37,9 @@ public:
 	const char* get_brush_style();
 	// other
 	void move(int x, int y);
-	void draw_figuration(HDC hdc, HWND hwnd); // рисует контур
-	void draw_painted(HDC hdc, HWND hwnd); // рисует закрашенную 
+	void draw_figuration(HWND hwnd, HDC hdc); // рисует контур
+	void draw_painted(HWND hwnd, HDC hdc); // рисует закрашенную 
 	void save(const char* namefile);
-	bool is_child(POINT* other_points);
+	bool is_child(QuadFigure& other_fig);
 };
 

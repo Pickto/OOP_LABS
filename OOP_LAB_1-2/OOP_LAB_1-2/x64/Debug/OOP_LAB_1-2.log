@@ -1,1 +1,3 @@
-﻿D:\MICROSOFT\Common7\IDE\VC\VCTargets\Microsoft.Cpp.Platform.targets(67,5): error MSB8020: Не удается найти средства сборки для v142 (набор инструментов платформы = "v142"). Чтобы выполнить сборку с использованием средств сборки v142 установите средства сборки v142.  Кроме того, можно выполнить обновление до текущей версии средств Visual Studio, перейдя в меню "Проект" или щелкнув решение правой кнопкой мыши и выбрав "Обновить решение...".
+﻿  figure.cpp
+C:\Users\Pickto\source\repos\OOP_LABS\OOP_LAB_1-2\OOP_LAB_1-2\figure.cpp(145): warning C4715:  QuadFigure::get_pen_style: значение возвращается не при всех путях выполнения
+  OOP_LAB_1-2.vcxproj -> C:\Users\Pickto\source\repos\OOP_LABS\OOP_LAB_1-2\x64\Debug\OOP_LAB_1-2.exe

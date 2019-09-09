@@ -35,7 +35,7 @@ bool read_from_file(const char* namefile, QuadFigure &figure)
 	std::ifstream file(namefile);
 
 	if (!file.is_open())
-		return 1;
+		return false;
 
 	std::string read;
 	int x, y, R, G, B, depth, read_hash;
@@ -109,7 +109,10 @@ bool read_from_file(const char* namefile, QuadFigure &figure)
 					break;
 				}
 			}
-			else if (read == "brush")
+
+			file >> read;
+
+			if (read == "brush")
 			{
 				file >> read;
 
@@ -153,7 +156,27 @@ bool read_from_file(const char* namefile, QuadFigure &figure)
 
 int main()
 {
+	HWND hwnd = GetConsoleWindow();
+	//HWND hwnd = FindWindow(TEXT("notepad"), TEXT("Безымянный — Блокнот"));
+	HDC hdc = GetDC(hwnd);
+	SetBkColor(hdc, RGB(0, 0, 0));
 
-	system("pause");
+	QuadFigure fig;
+
+	try
+	{
+		read_from_file("test.txt", fig);
+
+		fig.draw_figuration(hdc, hwnd);
+		fig.move(150, 0);
+		fig.draw_painted(hdc, hwnd);
+	}
+	catch (const char* error)
+	{
+		std::cout << "error: " << error << std::endl;
+	}
+
+	ReleaseDC(hwnd, hdc);
+
 	return 0;
 }

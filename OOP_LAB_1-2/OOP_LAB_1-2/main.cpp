@@ -47,14 +47,9 @@ int main()
 	//HWND hwnd = FindWindow(TEXT("notepad"), TEXT("Безымянный — Блокнот"));
 	HDC hdc = GetDC(hwnd);
 
-<<<<<<< HEAD
 	QuadFigure A;
 	QuadFigure B;
-=======
-	QuadFigure fig;
-	QuadFigure other_fig;
-	std::string command = "";
->>>>>>> 91c3b0ed1f9461f31fcfb6148a09dea4faa15cc6
+
 
 	while (command != "quit")
 	{
@@ -62,7 +57,6 @@ int main()
 		{
 			RECT rt;
 			GetClientRect(hwnd, &rt);
-<<<<<<< HEAD
 			std::string figure;
 			std::cin >> figure;
 			FillRect(hdc, &rt, (HBRUSH)(COLOR_WINDOW + 1));
@@ -73,32 +67,7 @@ int main()
 			else if (figure == "AB")
 			{
 				if (A.is_child(B))
-=======
-			std::cin >> command;
-			FillRect(hdc, &rt, (HBRUSH)(COLOR_WINDOW + 1));
-			
-			if (command == "draw_one")
-			{
-				std::string param;
-				std::string namefile;
-				std::cin >> param >> namefile;
-				fig.read(namefile);
 
-				if (param == "empty")
-					fig.draw_figuration(hwnd, hdc);
-				else if (param == "full")
-					fig.draw_painted(hwnd, hdc);
-			}
-			else if (command == "draw_two")
-			{
-				std::string param_a, param_b;
-				std::string namefile_a, namefile_b;
-				std::cin >> param_a >> namefile_a >> param_b >> namefile_b;
-				fig.read(namefile_a);
-				other_fig.read(namefile_b);
-
-				if (fig.is_child(other_fig))
->>>>>>> 91c3b0ed1f9461f31fcfb6148a09dea4faa15cc6
 				{
 					B.draw_painted(hwnd, hdc);
 					A.draw_painted(hwnd, hdc);
@@ -107,7 +76,6 @@ int main()
 				{
 					throw "B isn't child A";
 				}
-<<<<<<< HEAD
 			}
 			else if (figure == "BA")
 			{
@@ -121,23 +89,7 @@ int main()
 					throw "A isn't child B";
 				}
 			}
-=======
-				else
-					throw "no one figure is child";
-			}
-			else if (command == "move")
-			{
-				std::string param;
-				int x, y;
-				std::cin >> param >> x >> y;
-				fig.move(x, y);
 
-				if (param == "empty")
-					fig.draw_figuration(hwnd, hdc);
-				else if (param == "full")
-					fig.draw_painted(hwnd, hdc);
-			}
->>>>>>> 91c3b0ed1f9461f31fcfb6148a09dea4faa15cc6
 		}
 		catch (const char* error)
 		{

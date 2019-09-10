@@ -1,6 +1,46 @@
 #include <iostream>
 #include "figure.h"
 
+
+void command_handler(QuadFigure &fig, HWND &hwnd, HDC &hdc)
+{
+	std::string command;
+	std::cin >> command;
+	if (command == "read")
+	{
+		std::string namefile;
+		std::cin >> namefile;
+		fig.read(namefile);
+	}
+	else if (command == "save")
+	{
+		std::string namefile;
+		std::cin >> namefile;
+		fig.save(namefile);
+	}
+	else if (command == "draw_fill")
+	{
+		fig.draw_painted(hwnd, hdc);
+	}
+	else if (command == "draw_figuration")
+	{
+		fig.draw_figuration(hwnd, hdc);
+	}
+	else if (command == "set_point")
+	{
+		std::string read;
+		int n, x, y;
+		std::cin >> n >> x >> read >> y;
+		fig.set_point(n, x, y);
+	}
+	else if (command == "get_point")
+	{
+		int n;
+		std::cin >> n;
+		std::cout << fig.get_point(n).x << fig.get_point(n).y << "\n";
+	}
+}
+
 int main()
 {
 	HWND hwnd = GetConsoleWindow();
@@ -8,8 +48,8 @@ int main()
 	HDC hdc = GetDC(hwnd);
 	SetBkColor(hdc, RGB(0, 0, 0));
 
-	QuadFigure fig;
-	QuadFigure other_fig;
+	QuadFigure A;
+	QuadFigure B;
 
 	while (true)
 	{
@@ -17,66 +57,36 @@ int main()
 		{
 			RECT rt;
 			GetClientRect(hwnd, &rt);
-			std::string command;
-			std::cin >> command;
+			std::string figure;
+			std::cin >> figure;
 			FillRect(hdc, &rt, (HBRUSH)(COLOR_WINDOW + 1));
-			if (command == "draw_one")
+			if (figure == "A")
+				command_handler(A, hwnd, hdc);
+			else if (figure == "B")
+				command_handler(B, hwnd, hdc);
+			else if (figure == "AB")
 			{
-				std::string param;
-				std::string namefile;
-				std::cin >> param >> namefile;
-				fig.read(namefile);
-				if (param == "empty")
-					fig.draw_figuration(hwnd, hdc);
-				else if (param == "full")
-					fig.draw_painted(hwnd, hdc);
-			}
-			else if (command == "draw_two")
-			{
-				std::string param_a, param_b;
-				std::string namefile_a, namefile_b;
-				std::cin >> param_a >> namefile_a >> param_b >> namefile_b;
-				fig.read(namefile_a);
-				other_fig.read(namefile_b);
-				if (fig.is_child(other_fig))
+				if (A.is_child(B))
 				{
-					if (param_b == "full")
-						other_fig.draw_painted(hwnd, hdc);
-					else if (param_b == "empty")
-						other_fig.draw_figuration(hwnd, hdc);
-					if (param_a == "full")
-						fig.draw_painted(hwnd, hdc);
-					else if (param_a == "empty")
-						fig.draw_figuration(hwnd, hdc);
-				}
-				else if (other_fig.is_child(fig))
-				{
-					if (param_a == "full")
-						fig.draw_painted(hwnd, hdc);
-					else if (param_a == "empty")
-						fig.draw_figuration(hwnd, hdc);
-					if (param_b == "full")
-						other_fig.draw_painted(hwnd, hdc);
-					else if (param_b == "empty")
-						other_fig.draw_figuration(hwnd, hdc);
+					B.draw_painted(hwnd, hdc);
+					A.draw_painted(hwnd, hdc);
 				}
 				else
-					throw "no one figure is child";
+				{
+					throw "B isn't child A";
+				}
 			}
-			else if (command == "move")
+			else if (figure == "BA")
 			{
-				std::string param;
-				int x, y;
-				std::cin >> param >> x >> y;
-				fig.move(x, y);
-				if (param == "empty")
-					fig.draw_figuration(hwnd, hdc);
-				else if (param == "full")
-					fig.draw_painted(hwnd, hdc);
-			}
-			else if (command == "quit")
-			{
-				break;
+				if (B.is_child(A))
+				{
+					A.draw_painted(hwnd, hdc);
+					B.draw_painted(hwnd, hdc);
+				}
+				else
+				{
+					throw "A isn't child B";
+				}
 			}
 		}
 		catch (const char* error)
@@ -88,3 +98,4 @@ int main()
 
 	return 0;
 }
+

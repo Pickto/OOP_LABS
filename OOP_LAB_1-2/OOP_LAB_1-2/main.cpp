@@ -73,7 +73,7 @@ int main()
 				}
 				else
 				{
-					throw "A isn't child B";
+					throw "B isn't child A";
 				}
 			}
 			else if (figure == "BA")
@@ -87,7 +87,7 @@ int main()
 				}
 				else
 				{
-					throw "B isn't child A";
+					throw "A isn't child B";
 				}
 			}
 

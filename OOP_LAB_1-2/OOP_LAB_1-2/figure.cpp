@@ -33,11 +33,14 @@ QuadFigure::QuadFigure(POINT* points, COLORREF pen_color, COLORREF brush_color, 
 	set_brush_style(brush_style);
 }
 
-// set мб возвращать старые значения
+// set Г¬ГЎ ГўГ®Г§ГўГ°Г Г№Г ГІГј Г±ГІГ Г°Г»ГҐ Г§Г­Г Г·ГҐГ­ГЁГї
 void QuadFigure::set_point(int number, int x, int y) 
 {
 	if (x < 0 || y < 0)
 		throw "Out of range window";
+	
+	if (number < 0 || number > 4)
+		throw "Invalid number point";
 
 	points[number].x = x;
 	points[number].y = y;
@@ -134,6 +137,9 @@ const char* QuadFigure::get_pen_style()
 
 	case PS_INSIDEFRAME:
 		return "PS_INSIDEFRAME";
+			
+	default:
+		return "NONE";
 	}
 }
 

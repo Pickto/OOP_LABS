@@ -39,6 +39,8 @@ void command_handler(QuadFigure &fig, HWND &hwnd, HDC &hdc)
 		std::cin >> n;
 		std::cout << fig.get_point(n).x << " " << fig.get_point(n).y << "\n";
 	}
+	else
+		std::cout << "Unknown command\n";
 }
 
 int main()
@@ -89,6 +91,8 @@ int main()
 					throw "A isn't child B";
 				}
 			}
+			else
+				std::cout << "Unknown command\n";
 
 		}
 		catch (const char* error)

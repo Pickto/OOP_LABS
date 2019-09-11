@@ -50,14 +50,14 @@ int main()
 	QuadFigure A;
 	QuadFigure B;
 
+	std::string figure;
 
-	while (command != "quit")
+	while (figure != "quit")
 	{
 		try
 		{
 			RECT rt;
 			GetClientRect(hwnd, &rt);
-			std::string figure;
 			std::cin >> figure;
 			FillRect(hdc, &rt, (HBRUSH)(COLOR_WINDOW + 1));
 			if (figure == "A")
@@ -65,6 +65,18 @@ int main()
 			else if (figure == "B")
 				command_handler(B, hwnd, hdc);
 			else if (figure == "AB")
+			{
+				if (B.is_child(A))
+				{
+					A.draw_painted(hwnd, hdc);
+					B.draw_painted(hwnd, hdc);
+				}
+				else
+				{
+					throw "A isn't child B";
+				}
+			}
+			else if (figure == "BA")
 			{
 				if (A.is_child(B))
 
@@ -75,18 +87,6 @@ int main()
 				else
 				{
 					throw "B isn't child A";
-				}
-			}
-			else if (figure == "BA")
-			{
-				if (B.is_child(A))
-				{
-					A.draw_painted(hwnd, hdc);
-					B.draw_painted(hwnd, hdc);
-				}
-				else
-				{
-					throw "A isn't child B";
 				}
 			}
 

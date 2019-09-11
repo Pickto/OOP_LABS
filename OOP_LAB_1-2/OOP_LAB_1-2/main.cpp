@@ -37,7 +37,7 @@ void command_handler(QuadFigure &fig, HWND &hwnd, HDC &hdc)
 	{
 		int n;
 		std::cin >> n;
-		std::cout << fig.get_point(n).x << fig.get_point(n).y << "\n";
+		std::cout << fig.get_point(n).x << " " << fig.get_point(n).y << "\n";
 	}
 }
 

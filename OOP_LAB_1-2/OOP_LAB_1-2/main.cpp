@@ -44,7 +44,6 @@ void command_handler(QuadFigure &fig, HWND &hwnd, HDC &hdc)
 int main()
 {
 	HWND hwnd = GetConsoleWindow();
-	//HWND hwnd = FindWindow(TEXT("notepad"), TEXT("Безымянный — Блокнот"));
 	HDC hdc = GetDC(hwnd);
 
 	QuadFigure A;

@@ -23,13 +23,6 @@ QuadFigure::QuadFigure()
 
 QuadFigure::QuadFigure(POINT* points, COLORREF pen_color, COLORREF brush_color, int depth_pen, int pen_style, int brush_style)
 {
-	// check convexity
-	for (int i = 0; i < 4; i++)
-	{
-		if (inside_triangle(points[(i + 1) % 4], points[(i + 2) % 4], points[(i + 3) % 4], points[i]))
-			throw "non-convex figure";
-	}
-
 	for (int i = 0; i < 4; i++)
 		set_point(i, points[i].x, points[i].y);
 
@@ -189,14 +182,12 @@ void QuadFigure::draw_figuration(HWND hwnd, HDC hdc)
 	RECT size_window;
 	GetClientRect(hwnd, &size_window);
 
-	for (int i = 0; i < 4; i++)
-	{
-		if (inside_triangle(points[(i + 1) % 4], points[(i + 2) % 4], points[(i + 3) % 4], points[i]))
-			throw "non-convex figure";
+	if (!is_convex())
+		throw "Non-convex figure";
 
+	for (int i = 0; i < 4; i++)
 		if (points[i].x > size_window.right || points[i].y > size_window.bottom)
 			throw "Out of range window";
-	}
 
 	HPEN pen = CreatePen(pen_style, depth_pen, pen_color);
 	
@@ -364,11 +355,15 @@ void QuadFigure::read(std::string namefile)
 bool QuadFigure::is_child(QuadFigure& other_fig)
 {
 	for (int i = 0; i < 4; i++)
-	{
 		if (!inside_triangle(other_fig.points[0], other_fig.points[1], other_fig.points[2], points[i]) &&
 			!inside_triangle(other_fig.points[2], other_fig.points[3], other_fig.points[0], points[i]))
 			return false;
-	}
-
+	return true;
+}
+bool QuadFigure::is_convex()
+{
+	for (int i = 0; i < 4; i++)
+		if (inside_triangle(points[(i + 1) % 4], points[(i + 2) % 4], points[(i + 3) % 4], points[i]))
+			return false;
 	return true;
 }

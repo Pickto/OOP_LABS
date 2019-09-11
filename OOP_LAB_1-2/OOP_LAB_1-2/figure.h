@@ -41,7 +41,8 @@ public:
 	void draw_figuration(HWND hwnd, HDC hdc); // рисует контур
 	void draw_painted(HWND hwnd, HDC hdc); // рисует закрашенную 
 	void save(std::string namefile); // сохраняет объект в файл с именем namefile
-	void read(std::string namefile); // загружает объект из файлф с именем namefile
+	void read(std::string namefile); // загружает объект из файла с именем namefile
 	bool is_child(QuadFigure& other_fig); // проверяет лежит ли объект внутри other_fig
+	bool is_convex();
 };
 

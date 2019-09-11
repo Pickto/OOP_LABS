@@ -40,7 +40,7 @@ void command_handler(QuadFigure &fig, HWND &hwnd, HDC &hdc)
 		std::cout << fig.get_point(n).x << " " << fig.get_point(n).y << "\n";
 	}
 	else
-		std::cout << "Unknown command\n";
+		throw "Unknown command";
 }
 
 int main()
@@ -80,11 +80,9 @@ int main()
 			else if (figure == "BA")
 			{
 				if (A.is_child(B))
-
 				{
-					command_handler(A, hwnd, hdc);
 					command_handler(B, hwnd, hdc);
-
+					command_handler(A, hwnd, hdc);
 				}
 				else
 				{
@@ -92,7 +90,7 @@ int main()
 				}
 			}
 			else
-				std::cout << "Unknown command\n";
+				throw "Unknown command";
 
 		}
 		catch (const char* error)

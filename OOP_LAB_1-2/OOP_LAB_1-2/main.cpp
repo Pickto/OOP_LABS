@@ -68,8 +68,8 @@ int main()
 			{
 				if (B.is_child(A))
 				{
-					A.draw_painted(hwnd, hdc);
-					B.draw_painted(hwnd, hdc);
+					command_handler(A, hwnd, hdc);
+					command_handler(B, hwnd, hdc);
 				}
 				else
 				{
@@ -81,8 +81,9 @@ int main()
 				if (A.is_child(B))
 
 				{
-					B.draw_painted(hwnd, hdc);
-					A.draw_painted(hwnd, hdc);
+					command_handler(A, hwnd, hdc);
+					command_handler(B, hwnd, hdc);
+
 				}
 				else
 				{

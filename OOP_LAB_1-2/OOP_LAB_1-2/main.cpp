@@ -66,6 +66,18 @@ int main()
 				command_handler(B, hwnd, hdc);
 			else if (figure == "AB")
 			{
+				if (B.is_child(A))
+				{
+					A.draw_painted(hwnd, hdc);
+					B.draw_painted(hwnd, hdc);
+				}
+				else
+				{
+					throw "A isn't child B";
+				}
+			}
+			else if (figure == "BA")
+			{
 				if (A.is_child(B))
 
 				{
@@ -75,18 +87,6 @@ int main()
 				else
 				{
 					throw "B isn't child A";
-				}
-			}
-			else if (figure == "BA")
-			{
-				if (B.is_child(A))
-				{
-					A.draw_painted(hwnd, hdc);
-					B.draw_painted(hwnd, hdc);
-				}
-				else
-				{
-					throw "A isn't child B";
 				}
 			}
 

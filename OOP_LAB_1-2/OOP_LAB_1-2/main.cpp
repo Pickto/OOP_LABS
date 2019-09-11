@@ -6,6 +6,7 @@ void command_handler(QuadFigure &fig, HWND &hwnd, HDC &hdc)
 {
 	std::string command;
 	std::cin >> command;
+	
 	if (command == "read")
 	{
 		std::string namefile;
@@ -61,6 +62,7 @@ int main()
 			GetClientRect(hwnd, &rt);
 			std::cin >> figure;
 			FillRect(hdc, &rt, (HBRUSH)(COLOR_WINDOW + 1));
+			
 			if (figure == "A")
 				command_handler(A, hwnd, hdc);
 			else if (figure == "B")
@@ -89,7 +91,7 @@ int main()
 					throw "A isn't child B";
 				}
 			}
-			else
+			else if (figure != "quit")
 				throw "Unknown command";
 
 		}

@@ -237,6 +237,7 @@ void QuadFigure::save(std::string namefile)
 	file << "\nSTYLES\npen " << get_pen_style() << "\n";
 	file << "brush " << get_brush_style();
 }
+
 void QuadFigure::read(std::string namefile)
 {
 	std::ifstream file(namefile);
@@ -358,6 +359,7 @@ void QuadFigure::read(std::string namefile)
 
 	file.close();
 }
+
 bool QuadFigure::is_child(QuadFigure& other_fig)
 {
 	for (int i = 0; i < 4; i++)
@@ -366,6 +368,7 @@ bool QuadFigure::is_child(QuadFigure& other_fig)
 			return false;
 	return true;
 }
+
 bool QuadFigure::is_convex()
 {
 	for (int i = 0; i < 4; i++)

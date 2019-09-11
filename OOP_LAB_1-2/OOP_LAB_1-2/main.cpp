@@ -76,6 +76,7 @@ int main()
 				}
 				else
 				{
+					std::getline(std::cin, figure);
 					throw "B isn't child A";
 				}
 			}
@@ -88,6 +89,7 @@ int main()
 				}
 				else
 				{
+					std::getline(std::cin, figure);
 					throw "A isn't child B";
 				}
 			}

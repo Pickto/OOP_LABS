@@ -76,7 +76,6 @@ int main()
 				}
 				else
 				{
-					std::getline(std::cin, figure);
 					throw "B isn't child A";
 				}
 			}
@@ -89,7 +88,6 @@ int main()
 				}
 				else
 				{
-					std::getline(std::cin, figure);
 					throw "A isn't child B";
 				}
 			}
@@ -101,6 +99,9 @@ int main()
 		{
 			std::cout << "error: " << error << std::endl;
 		}
+		
+		if (figure != "quit")
+			std::getline(std::cin, figure);
 	}
 
 	ReleaseDC(hwnd, hdc);

@@ -8,7 +8,6 @@ bool QuadFigure::inside_triangle(POINT a, POINT b, POINT c, POINT check)
 
 	return x1 >= 0 && x2 >= 0 && x3 >= 0 || x1 <= 0 && x2 <= 0 && x3 <= 0;
 }
-
 QuadFigure::QuadFigure()
 {
 	for (int i = 0; i < 4; i++)
@@ -20,38 +19,23 @@ QuadFigure::QuadFigure()
 	pen_style = PS_SOLID;
 	brush_style = -1;
 }
-
-QuadFigure::QuadFigure(POINT* points, COLORREF pen_color, COLORREF brush_color, int depth_pen, int pen_style, int brush_style)
-{
-	for (int i = 0; i < 4; i++)
-		set_point(i, points[i].x, points[i].y);
-
-	this->pen_color = pen_color;
-	this->brush_color = brush_color;
-	set_depth_pen(depth_pen);
-	set_pen_style(pen_style);
-	set_brush_style(brush_style);
-}
-
-// set ìá âîçâðàùàòü ñòàðûå çíà÷åíèÿ
+// set 
 void QuadFigure::set_point(int number, int x, int y) 
 {
-	if (x < 0 || y < 0)
-		throw "Out of range window";
-	
 	if (number < 0 || number > 4)
 		throw "Invalid number point";
 
 	points[number].x = x;
 	points[number].y = y;
-}
-
+} 
 void QuadFigure::set_points(POINT *points)
 {
+	if (!QuadFigure::is_convex(points))
+		throw "Non-convex figure";
+
 	for (int i = 0; i < 4; i++)
 		set_point(i, points[i].x, points[i].y);
 }
-
 void QuadFigure::set_pen_color(int R, int G, int B)
 {
 	if (R > 255 || R < 0 || G > 255 || G < 0 || B > 255 || B < 0)
@@ -59,7 +43,6 @@ void QuadFigure::set_pen_color(int R, int G, int B)
 
 	pen_color = RGB(R, G, B);
 }
-
 void QuadFigure::set_brush_color(int R, int G, int B)
 {
 	if (R > 255 || R < 0 || G > 255 || G < 0 || B > 255 || B < 0)
@@ -67,15 +50,13 @@ void QuadFigure::set_brush_color(int R, int G, int B)
 
 	brush_color = RGB(R, G, B);
 }
-
-void QuadFigure::set_depth_pen(int value)
+void QuadFigure::set_depth_pen(int depth_pen)
 {
-	if (value < 0)
+	if (depth_pen < 0)
 		throw "Invalid depth value";
 
-	depth_pen = value;
+	this->depth_pen = depth_pen;
 }
-
 void QuadFigure::set_pen_style(int pen_style)
 {
 	if(pen_style < PS_SOLID || pen_style > PS_INSIDEFRAME)
@@ -83,7 +64,6 @@ void QuadFigure::set_pen_style(int pen_style)
 
 	this->pen_style = pen_style;
 }
-
 void QuadFigure::set_brush_style(int brush_style)
 {
 	if ((brush_style < HS_HORIZONTAL || brush_style > HS_DIAGCROSS) && brush_style != -1)
@@ -91,28 +71,25 @@ void QuadFigure::set_brush_style(int brush_style)
 
 	this->brush_style = brush_style;
 }
-
 // get
 POINT QuadFigure::get_point(int number) 
 {
+	if (number < 0 || number > 3)
+		throw "Out of range";
 	return points[number];
 }
-
 COLORREF QuadFigure::get_pen_color()
 {
 	return pen_color;
 }
-
 COLORREF QuadFigure::get_brush_color()
 {
 	return brush_color;
 }
-
 int QuadFigure::get_depth_pen()
 {
 	return depth_pen;
 }
-
 const char* QuadFigure::get_pen_style()
 {
 	switch (pen_style)
@@ -142,7 +119,6 @@ const char* QuadFigure::get_pen_style()
 		return "NONE";
 	}
 }
-
 const char* QuadFigure::get_brush_style()
 {
 	switch (brush_style)
@@ -169,7 +145,6 @@ const char* QuadFigure::get_brush_style()
 		return "NONE";
 	}
 }
-
 // other
 void QuadFigure::move(int x, int y)
 {
@@ -177,24 +152,10 @@ void QuadFigure::move(int x, int y)
 	{
 		points[i].x += x;
 		points[i].y += y;
-
-		if (points[i].x < 0 || points[i].y < 0)
-			throw "Out of range window";
 	}
 }
-
 void QuadFigure::draw_figuration(HWND hwnd, HDC hdc)
 {
-	RECT size_window;
-	GetClientRect(hwnd, &size_window);
-
-	if (!is_convex())
-		throw "Non-convex figure";
-
-	for (int i = 0; i < 4; i++)
-		if (points[i].x > size_window.right || points[i].y > size_window.bottom)
-			throw "Out of range window";
-
 	HPEN pen = CreatePen(pen_style, depth_pen, pen_color);
 	
 	pen = SelectPen(hdc, pen);
@@ -203,7 +164,6 @@ void QuadFigure::draw_figuration(HWND hwnd, HDC hdc)
 
 	SelectPen(hdc, pen);
 }
-
 void QuadFigure::draw_painted(HWND hwnd, HDC hdc)
 {
 	HBRUSH brush;
@@ -219,7 +179,6 @@ void QuadFigure::draw_painted(HWND hwnd, HDC hdc)
 
 	SelectBrush(hdc, brush);
 }
-
 void QuadFigure::save(std::string namefile)
 {
 	std::ofstream file(namefile);
@@ -237,7 +196,6 @@ void QuadFigure::save(std::string namefile)
 	file << "\nSTYLES\npen " << get_pen_style() << "\n";
 	file << "brush " << get_brush_style();
 }
-
 void QuadFigure::read(std::string namefile)
 {
 	std::ifstream file(namefile);
@@ -255,11 +213,16 @@ void QuadFigure::read(std::string namefile)
 		switch (read_hash)
 		{
 		case HASH_POINTS:
+			POINT raw_points[4];
 			for (int i = 0; i < 4; i++)
 			{
 				file >> x >> read >> y;
-				set_point(i, x, y);
+				raw_points[i].x = x;
+				raw_points[i].y = y;
 			}
+			if (!QuadFigure::is_convex(raw_points))
+				throw "Non-convex figure";
+			set_points(raw_points);
 			break;
 
 		case HASH_PEN:
@@ -359,20 +322,28 @@ void QuadFigure::read(std::string namefile)
 
 	file.close();
 }
-
 bool QuadFigure::is_child(QuadFigure& other_fig)
 {
 	for (int i = 0; i < 4; i++)
-		if (!inside_triangle(other_fig.points[0], other_fig.points[1], other_fig.points[2], points[i]) &&
-			!inside_triangle(other_fig.points[2], other_fig.points[3], other_fig.points[0], points[i]))
+		if (!QuadFigure::inside_triangle(other_fig.points[0], other_fig.points[1], other_fig.points[2], points[i]) &&
+			!QuadFigure::inside_triangle(other_fig.points[2], other_fig.points[3], other_fig.points[0], points[i]))
 			return false;
 	return true;
 }
+bool QuadFigure::in_rect_window(HWND hwnd)
+{
+	RECT size_window;
+	GetClientRect(hwnd, &size_window);
 
-bool QuadFigure::is_convex()
+	for (int i = 0; i < 4; i++)
+		if (points[i].x > size_window.right || points[i].y > size_window.bottom)
+			return false;
+	return true;
+}
+bool QuadFigure::is_convex(POINT* points)
 {
 	for (int i = 0; i < 4; i++)
-		if (inside_triangle(points[(i + 1) % 4], points[(i + 2) % 4], points[(i + 3) % 4], points[i]))
+		if (QuadFigure::inside_triangle(points[(i + 1) % 4], points[(i + 2) % 4], points[(i + 3) % 4], points[i]))
 			return false;
 	return true;
 }

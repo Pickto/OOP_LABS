@@ -27,13 +27,6 @@ void command_handler(QuadFigure &fig, HWND &hwnd, HDC &hdc)
 	{
 		fig.draw_figuration(hwnd, hdc);
 	}
-	else if (command == "set_point")
-	{
-		std::string read;
-		int n, x, y;
-		std::cin >> n >> x >> read >> y;
-		fig.set_point(n, x, y);
-	}
 	else if (command == "get_point")
 	{
 		int n;

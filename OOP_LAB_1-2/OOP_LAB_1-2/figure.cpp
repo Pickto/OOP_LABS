@@ -336,7 +336,7 @@ bool QuadFigure::in_rect_window(HWND hwnd)
 	GetClientRect(hwnd, &size_window);
 
 	for (int i = 0; i < 4; i++)
-		if (points[i].x > size_window.right || points[i].y > size_window.bottom)
+		if (points[i].x > size_window.right || points[i].y > size_window.bottom || points[i].x < 0 || points[i].y < 0)
 			return false;
 	return true;
 }

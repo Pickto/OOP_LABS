@@ -220,8 +220,6 @@ void QuadFigure::read(std::string namefile)
 				raw_points[i].x = x;
 				raw_points[i].y = y;
 			}
-			if (!QuadFigure::is_convex(raw_points))
-				throw "Non-convex figure";
 			set_points(raw_points);
 			break;
 

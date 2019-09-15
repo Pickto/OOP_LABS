@@ -17,8 +17,10 @@ private:
 	int pen_style;
 	int brush_style;
 
-	static bool inside_triangle(POINT a, POINT b, POINT c, POINT check); // находится ли точка check в треугольнике abc
 	void set_point(int number, int x, int y); // изменяет положение одной точки под номером number
+
+	static bool inside_triangle(POINT a, POINT b, POINT c, POINT check); // находится ли точка check в треугольнике abc
+	
 public:
 	QuadFigure();
 	// set

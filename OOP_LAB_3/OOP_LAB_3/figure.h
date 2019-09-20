@@ -46,5 +46,7 @@ public:
 	bool is_child(QuadFigure& other_fig); // проверяет лежит ли объект внутри other_fig
 	bool in_rect_window(HWND hnwd); // входит ли фигура в окно
 	static bool is_convex(POINT* points); // проверка на выпуклость фигуры
+	// перегрузка оператора сравнения
+	bool operator==(QuadFigure compared_element);
 };
 

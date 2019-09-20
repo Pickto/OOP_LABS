@@ -371,3 +371,19 @@ bool QuadFigure::is_convex(POINT* points)
 
 	return true;
 }
+
+bool QuadFigure::operator==(QuadFigure compared_element)
+{
+	for (int i = 0; i < 4; i++)
+	{
+		if (points[i].x != compared_element.points[i].x || points[i].y != compared_element.points[i].y)
+			return false;
+	}
+
+	if ((pen_color != compared_element.pen_color) || (brush_color != compared_element.brush_color) || 
+		(depth_pen != compared_element.depth_pen) || (pen_style != compared_element.pen_style) || 
+		(brush_style != compared_element.brush_style))
+		return false;
+
+	return true;
+}

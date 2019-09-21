@@ -41,7 +41,7 @@ public:
 	void move(int x = 0, int y = 0); // передвижение фигуры на ветор (x, y)
 	void draw_figuration(HWND hwnd, HDC hdc); // рисует контур
 	void draw_painted(HWND hwnd, HDC hdc); // рисует закрашенную 
-	void save(std::string namefile); // сохраняет объект в файл с именем namefile
+	void save(std::string namefile, std::ofstream& file); // сохраняет объект в файл с именем namefile
 	void read(std::string namefile); // загружает объект из файла с именем namefile
 	bool is_child(QuadFigure& other_fig); // проверяет лежит ли объект внутри other_fig
 	bool in_rect_window(HWND hnwd); // входит ли фигура в окно

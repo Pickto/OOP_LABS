@@ -19,7 +19,7 @@ Open_Stack::~Open_Stack()
 	count_element = 0;
 }
 
-void Open_Stack::push(const QuadFigure& add_element)
+void Open_Stack::push(QuadFigure* add_element)
 {
 	if (top == NULL)
 	{
@@ -38,12 +38,12 @@ void Open_Stack::push(const QuadFigure& add_element)
 	count_element++;
 }
 
-QuadFigure& Open_Stack::pop()
+QuadFigure Open_Stack::pop()
 {
 	if (top == NULL)
 		throw "stack is empty";
 
-	QuadFigure pop_element = top->figure;
+	QuadFigure* pop_element = top->figure;
 
 	StackElement* temp = top;
 	top = top->next;
@@ -51,15 +51,15 @@ QuadFigure& Open_Stack::pop()
 
 	count_element--;
 
-	return pop_element;
+	return *pop_element;
 }
 
-bool Open_Stack::search(const QuadFigure required_element)
+bool Open_Stack::search(QuadFigure required_element)
 {
 	StackElement* temp = top;
 	while (temp != NULL)
 	{
-		if (temp->figure == required_element)
+		if (*(temp->figure) == required_element)
 			return true;
 
 		temp = temp->next;
@@ -75,5 +75,34 @@ int Open_Stack::size()
 
 void Open_Stack::save(std::string namefile)
 {
+	std::ofstream file(namefile);
 
+	StackElement* temp = top;
+	int i = 1;
+	
+	while (temp != NULL)
+	{
+		temp->figure->save(namefile, file);
+		temp = temp->next;
+	}
+
+	file.close();
+}
+
+void Open_Stack::print()
+{
+	StackElement* temp = top;
+	POINT print_point;
+
+	while (temp != NULL)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			print_point = temp->figure->get_point(i);
+			std::cout << print_point.x << ", " << print_point.y <<"\n";
+		}
+
+		std::cout << "\n";
+		temp = temp->next;
+	}
 }

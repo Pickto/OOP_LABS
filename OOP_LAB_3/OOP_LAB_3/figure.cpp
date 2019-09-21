@@ -256,10 +256,8 @@ void QuadFigure::draw_painted(HWND hwnd, HDC hdc)
 	SelectBrush(hdc, brush);
 }
 
-void QuadFigure::save(std::string namefile)
+void QuadFigure::save(std::string namefile, std::ofstream& file)
 {
-	std::ofstream file(namefile);
-
 	file << "POINTS\n";
 	
 	for (int i = 0; i < 4; i++)
@@ -271,7 +269,7 @@ void QuadFigure::save(std::string namefile)
 	file << (int)GetRValue(brush_color) << ", " << (int)GetGValue(brush_color) << ", " << (int)GetBValue(brush_color) << "\n";
 	file << "\nDEPTH\n" << depth_pen << "\n";
 	file << "\nSTYLES\npen " << get_pen_style() << "\n";
-	file << "brush " << get_brush_style();
+	file << "brush " << get_brush_style() << "\n______________________________________\n";
 }
 
 void QuadFigure::read(std::string namefile)

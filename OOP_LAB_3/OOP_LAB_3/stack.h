@@ -1,9 +1,10 @@
 #pragma once
 #include "figure.h"
+#include <iostream>
 
 struct StackElement
 {
-	QuadFigure figure;
+	QuadFigure* figure;
 	StackElement* next;
 };
 
@@ -18,12 +19,14 @@ public:
 	Open_Stack();
 	~Open_Stack();
 	// добавление и удаление элемента
-	void push(const QuadFigure& add_element);
-	QuadFigure& pop();
+	void push(QuadFigure* add_element);
+	QuadFigure pop();
 	// поиск элемента
-	bool search(const QuadFigure required_element);
+	bool search(QuadFigure required_element);
 	// получение количества элементов
 	int size();
 	// сохранение контейнера
 	void save(std::string namefile);
+	// распечатка содержимого
+	void print();
 };

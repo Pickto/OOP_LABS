@@ -8,16 +8,16 @@ struct StackElement
 	StackElement* next;
 };
 
-class Open_Stack
+class OpenStack
 {
 private:
-	StackElement* top;
+	StackElement* top; 
 	int count_element;
 
 public:
 	// конструктор и деструктор
-	Open_Stack();
-	~Open_Stack();
+	OpenStack();
+	~OpenStack();
 	// добавление и удаление элемента
 	void push(QuadFigure* add_element);
 	QuadFigure pop();

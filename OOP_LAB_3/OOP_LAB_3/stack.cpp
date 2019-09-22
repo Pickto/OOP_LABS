@@ -38,7 +38,7 @@ void OpenStack::push(QuadFigure* add_element)
 	count_element++;
 }
 
-QuadFigure OpenStack::pop()
+QuadFigure* OpenStack::pop()
 {
 	if (top == NULL)
 		throw "stack is empty";
@@ -51,7 +51,7 @@ QuadFigure OpenStack::pop()
 
 	count_element--;
 
-	return *pop_element;
+	return pop_element;
 }
 
 bool OpenStack::search(QuadFigure required_element)
@@ -103,7 +103,7 @@ void OpenStack::read(std::string namefile)
 	}
 	while (temp_stack.count_element > 1)
 	{
-		push(&temp_stack.pop());
+		push(temp_stack.pop());
 	}
 	
 	delete new_figure;

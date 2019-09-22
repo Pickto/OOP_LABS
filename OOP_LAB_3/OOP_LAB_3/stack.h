@@ -20,7 +20,7 @@ public:
 	~OpenStack();
 	// добавление и удаление элемента
 	void push(QuadFigure* add_element);
-	QuadFigure pop();
+	QuadFigure* pop();
 	// поиск элемента
 	bool search(QuadFigure required_element);
 	// получение количества элементов

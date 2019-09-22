@@ -8,7 +8,7 @@ int main()
 	{
 		QuadFigure figures[2];
 
-		Open_Stack stack;
+		OpenStack stack;
 
 		for (int i = 0; i < 2; i++)
 		{
@@ -17,9 +17,14 @@ int main()
 
 		stack.save("output.txt");
 
+		OpenStack other_stack;
+
 		figures[0].move(100, 100);
 
 		stack.print();
+
+		other_stack.read("input.txt");
+
 	}
 	catch (const char* error)
 	{

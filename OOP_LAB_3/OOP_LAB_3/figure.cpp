@@ -256,7 +256,7 @@ void QuadFigure::draw_painted(HWND hwnd, HDC hdc)
 	SelectBrush(hdc, brush);
 }
 
-void QuadFigure::save(std::string namefile, std::ofstream& file)
+void QuadFigure::save(std::ofstream& file)
 {
 	file << "POINTS\n";
 	
@@ -272,10 +272,8 @@ void QuadFigure::save(std::string namefile, std::ofstream& file)
 	file << "brush " << get_brush_style() << "\n______________________________________\n";
 }
 
-void QuadFigure::read(std::string namefile)
+void QuadFigure::read(std::ifstream& file)
 {
-	std::ifstream file(namefile);
-
 	if (!file.is_open())
 		throw "Can not open file ";
 
@@ -333,10 +331,10 @@ void QuadFigure::read(std::string namefile)
 				set_brush_style(hash_string(read));
 			}
 			break;
+		case HASH_NEW_FIGURE:
+			return;
 		}
 	}
-
-	file.close();
 }
 
 bool QuadFigure::is_child(QuadFigure& other_fig)

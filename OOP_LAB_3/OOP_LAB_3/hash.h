@@ -19,5 +19,7 @@
 #define HASH_HS_FDIAGONAL 5722
 #define HASH_HS_HORIZONTAL 7112
 #define HASH_HS_VERTICAL 4965
+#define HASH_NEW_FIGURE 70395
+
 
 int hash_string(std::string str);

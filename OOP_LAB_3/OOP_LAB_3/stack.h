@@ -27,6 +27,8 @@ public:
 	int size();
 	// сохранение контейнера
 	void save(std::string namefile);
+	// чтение из файла
+	void read(std::string namefile);
 	// распечатка содержимого
 	void print();
 };

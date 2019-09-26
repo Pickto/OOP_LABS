@@ -13,6 +13,7 @@ OpenStack::~OpenStack()
 	{
 		temp = top;
 		top = top->next;
+		delete temp->figure;
 		delete temp;
 	}
 

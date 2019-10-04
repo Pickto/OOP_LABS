@@ -1,0 +1,25 @@
+#pragma once
+#include <string>
+#define HASH_POINTS 1687
+#define HASH_COLORS 1677
+#define HASH_PEN 644
+#define HASH_BRUSH 1657
+#define HASH_DEPTH 1142
+#define HASH_STYLES 1665
+#define HASH_PS_SOLID 2769
+#define HASH_PS_DASH 2130
+#define HASH_PS_DOT 1702
+#define HASH_PS_DASHDOT 4225
+#define HASH_PS_DASHDOTDOT 7013
+#define HASH_PS_NULL 2256
+#define HASH_PS_INSIDEFRAME 7736
+#define HASH_HS_BDIAGONAL 5706
+#define HASH_HS_CROSS 2920
+#define HASH_HS_DIAGCROSS 6020
+#define HASH_HS_FDIAGONAL 5722
+#define HASH_HS_HORIZONTAL 7112
+#define HASH_HS_VERTICAL 4965
+#define HASH_NEW_FIGURE 70395
+
+
+int hash_string(std::string str);

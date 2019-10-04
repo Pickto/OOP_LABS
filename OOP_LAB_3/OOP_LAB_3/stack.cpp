@@ -13,7 +13,6 @@ OpenStack::~OpenStack()
 	{
 		temp = top;
 		top = top->next;
-		delete temp->figure;
 		delete temp;
 	}
 
@@ -55,7 +54,7 @@ QuadFigure* OpenStack::pop()
 	return pop_element;
 }
 
-bool OpenStack::search(QuadFigure required_element)
+bool OpenStack::search(const QuadFigure& required_element) const
 {
 	StackElement* temp = top;
 	while (temp != NULL)
@@ -69,12 +68,12 @@ bool OpenStack::search(QuadFigure required_element)
 	return false;
 }
 
-int OpenStack::size()
+int OpenStack::size() const
 {
 	return count_element;
 }
 
-void OpenStack::save(std::string namefile)
+void OpenStack::save(std::string namefile) const
 {
 	std::ofstream file(namefile);
 
@@ -110,8 +109,21 @@ void OpenStack::read(std::string namefile)
 	delete new_figure;
 }
 
-void OpenStack::print()
+QuadFigure* OpenStack::operator[](int index) const
 {
+	if (index >= count_element || index < 0)
+		return NULL;
+
+	StackElement* temp = top;
+
+	for (int i = 0; i < index; i++)
+		temp = temp->next;
+
+	return temp->figure;
+}; 
+
+void OpenStack::print() const
+{ 
 	StackElement* temp = top;
 	POINT print_point;
 

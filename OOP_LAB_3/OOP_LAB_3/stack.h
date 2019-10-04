@@ -22,13 +22,15 @@ public:
 	void push(QuadFigure* add_element);
 	QuadFigure* pop();
 	// поиск элемента
-	bool search(QuadFigure required_element);
+	bool search(const QuadFigure& required_element) const;
 	// получение количества элементов
-	int size();
+	int size() const;
 	// сохранение контейнера
-	void save(std::string namefile);
+	void save(std::string namefile) const;
 	// чтение из файла
 	void read(std::string namefile);
 	// распечатка содержимого
-	void print();
+	void print() const;
+	// функция оператора []
+	QuadFigure* operator[](int index) const;
 };

@@ -17,5 +17,5 @@ public:
 	void set_brush_style(int hash);
 
 	COLORREF get_brush_color();
-	char* get_brush_style();
+	const char* get_brush_style();
 };

@@ -5,7 +5,7 @@ void Filled::set_brush_color(int R, int G, int B)
 	if (R > 255 || R < 0 || G > 255 || G < 0 || B > 255 || B < 0)
 		throw "Invalid color value";
 
-	brush_color = RGB(R, G, B)
+	brush_color = RGB(R, G, B);
 }
 
 void Filled::set_brush_style(int hash)
@@ -47,7 +47,7 @@ COLORREF Filled::get_brush_color()
 	return brush_color;
 }
 
-char* Filled::get_brush_style()
+const char* Filled::get_brush_style()
 {
 
 	switch (brush_style)

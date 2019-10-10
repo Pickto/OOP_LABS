@@ -340,7 +340,10 @@ CombineQuadFigure::CombineQuadFigure(std::ifstream& file)
 	for (int i = 0; i < 4; i++)
 		if (!OutlineQuadFigure::inside_triangle(points[0], points[1], points[2], child->get_point(i)) &&
 			!OutlineQuadFigure::inside_triangle(points[2], points[3], points[0], child->get_point(i)))
+		{
+			delete child;
 			throw "Non child";
+		}
 
 }
 

@@ -1,0 +1,17 @@
+POINTS
+200, 200
+200, 300
+300, 300
+300, 200
+
+
+COLORS
+pen 0, 100, 0
+brush 0, 0, 255
+
+DEPTH
+5
+
+STYLES
+pen PS_DASH
+brush HS_CROSS

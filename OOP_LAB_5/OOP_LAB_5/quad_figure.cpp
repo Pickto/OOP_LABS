@@ -87,7 +87,7 @@ void OutlineQuadFigure::set_pen_depth(int pen_depth)
 	this->pen_depth = pen_depth;
 }
 
-POINT OutlineQuadFigure::get_point(int number)
+POINT OutlineQuadFigure::get_point(int number) const
 {
 	if (number < 0 || number > 3)
 		throw "Out of range";
@@ -95,17 +95,17 @@ POINT OutlineQuadFigure::get_point(int number)
 	return points[number];
 }
 
-int OutlineQuadFigure::get_count_points()
+int OutlineQuadFigure::get_count_points() const
 {
 	return count_points;
 }
 
-COLORREF OutlineQuadFigure::get_pen_color()
+COLORREF OutlineQuadFigure::get_pen_color() const
 {
 	return pen_color;
 }
 
-const char* OutlineQuadFigure::get_pen_style()
+const char* OutlineQuadFigure::get_pen_style() const
 {
 	switch (pen_style)
 	{
@@ -136,12 +136,12 @@ const char* OutlineQuadFigure::get_pen_style()
 	}
 }
 
-int OutlineQuadFigure::get_pen_depth()
+int OutlineQuadFigure::get_pen_depth() const
 {
 	return pen_depth;
 }
 
-void OutlineQuadFigure::draw(HWND hwnd, HDC hdc)
+void OutlineQuadFigure::draw(HWND hwnd, HDC hdc) const
 {
 	HPEN pen = CreatePen(pen_style, pen_depth, pen_color);
 
@@ -211,7 +211,7 @@ void OutlineQuadFigure::read(std::ifstream& file)
 	}
 }
 
-void OutlineQuadFigure::save(std::ofstream& file)
+void OutlineQuadFigure::save(std::ofstream& file) const
 {
 	file << "POINTS\n";
 
@@ -230,6 +230,20 @@ bool OutlineQuadFigure::is_convex(POINT* points)
 	for (int i = 0; i < 4; i++)
 		if (OutlineQuadFigure::inside_triangle(points[(i + 1) % 4], points[(i + 2) % 4], points[(i + 3) % 4], points[i]))
 			return false;
+
+	return true;
+}
+
+bool OutlineQuadFigure::operator==(const OutlineQuadFigure& compared_element)
+{
+	for (int i = 0; i < 4; i++)
+	{
+		if (points[i].x != compared_element.points[i].x || points[i].y != compared_element.points[i].y)
+			return false;
+	}
+
+	if ((pen_color != compared_element.pen_color) ||(pen_style != compared_element.pen_style))
+		return false;
 
 	return true;
 }
@@ -331,6 +345,22 @@ void FilledQuadFigure::save(std::ofstream& file)
 	file << "brush " << get_brush_style() << "\n______________________________________\n";
 }
 
+bool FilledQuadFigure::operator==(const FilledQuadFigure& compared_element)
+{
+	for (int i = 0; i < 4; i++)
+	{
+		if (points[i].x != compared_element.points[i].x || points[i].y != compared_element.points[i].y)
+			return false;
+	}
+
+	if ((pen_color != compared_element.pen_color) || (brush_color != compared_element.brush_color) ||
+		(pen_depth != compared_element.pen_depth) || (pen_style != compared_element.pen_style) ||
+		(brush_style != compared_element.brush_style))
+		return false;
+
+	return true;
+}
+
 CombineQuadFigure::CombineQuadFigure(std::ifstream& file)
 {
 	FilledQuadFigure::read(file);
@@ -359,4 +389,9 @@ void CombineQuadFigure::draw(HWND hwnd, HDC hdc)
 {
 	FilledQuadFigure::draw(hwnd, hdc);
 	child->draw(hwnd, hdc);
+}
+
+bool CombineQuadFigure::operator==(CombineQuadFigure& compared_element)
+{
+	return *dynamic_cast<FilledQuadFigure*>(this) == *dynamic_cast<FilledQuadFigure*>(&compared_element) && *child == *compared_element.child;
 }

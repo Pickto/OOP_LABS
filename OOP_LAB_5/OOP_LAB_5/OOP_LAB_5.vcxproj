@@ -132,6 +132,7 @@
   <ItemGroup>
     <ClCompile Include="filled.cpp" />
     <ClCompile Include="hash.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="quad_figure.cpp" />
     <ClCompile Include="shape.cpp" />
   </ItemGroup>

@@ -42,12 +42,12 @@ void Filled::set_brush_style(int hash)
 	}
 }
 
-COLORREF Filled::get_brush_color()
+COLORREF Filled::get_brush_color() const
 {
 	return brush_color;
 }
 
-const char* Filled::get_brush_style()
+const char* Filled::get_brush_style() const
 {
 
 	switch (brush_style)

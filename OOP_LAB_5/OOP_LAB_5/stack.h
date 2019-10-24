@@ -1,4 +1,7 @@
 #pragma once
+#include <windows.h>
+#include <windowsx.h>
+#include <fstream>
 #include <iostream>
 
 template<class Figure>
@@ -12,7 +15,7 @@ template<class Figure>
 class OpenStack
 {
 private:
-	StackElement* top; 
+	StackElement<Figure>* top; 
 	int count_element;
 
 public:
@@ -44,7 +47,7 @@ OpenStack<Figure>::OpenStack() : count_element(0)
 template<class Figure>
 OpenStack<Figure>::~OpenStack()
 {
-	StackElement* temp;
+	StackElement<Figure>* temp;
 
 	while (top != NULL)
 	{
@@ -60,13 +63,13 @@ void OpenStack<Figure>::push(Figure* add_element)
 {
 	if (top == NULL)
 	{
-		top = new StackElement;
+		top = new StackElement<Figure>;
 		top->figure = add_element;
 		top->next = NULL;
 	}
 	else
 	{
-		StackElement* temp = new StackElement;
+		StackElement<Figure>* temp = new StackElement<Figure>;
 		temp->figure = add_element;
 		temp->next = top;
 		top = temp;
@@ -80,9 +83,9 @@ Figure* OpenStack<Figure>::pop()
 	if (top == NULL)
 		throw "stack is empty";
 
-	QuadFigure* pop_element = top->figure;
+	Figure* pop_element = top->figure;
 
-	StackElement* temp = top;
+	StackElement<Figure>* temp = top;
 	top = top->next;
 	delete temp;
 
@@ -93,7 +96,7 @@ Figure* OpenStack<Figure>::pop()
 template<class Figure>
 bool OpenStack<Figure>::search(const Figure& required_element) const
 {
-	StackElement* temp = top;
+	StackElement<Figure>* temp = top;
 	while (temp != NULL)
 	{
 		if (*(temp->figure) == required_element)
@@ -114,7 +117,7 @@ void OpenStack<Figure>::save(std::string namefile) const
 {
 	std::ofstream file(namefile);
 
-	StackElement* temp = top;
+	StackElement<Figure>* temp = top;
 	int i = 1;
 
 	while (temp != NULL)
@@ -130,11 +133,11 @@ void OpenStack<Figure>::read(std::string namefile)
 {
 	OpenStack temp_stack;
 	std::ifstream file(namefile);
-	QuadFigure* new_figure = NULL;
+	Figure* new_figure = NULL;
 
 	while (file.peek() != EOF)
 	{
-		new_figure = new QuadFigure();
+		new_figure = new Figure();
 		new_figure->read(file);
 		temp_stack.push(new_figure);
 	}
@@ -151,7 +154,7 @@ Figure* OpenStack<Figure>::operator[](int index) const
 	if (index >= count_element || index < 0)
 		return NULL;
 
-	StackElement* temp = top;
+	StackElement<Figure>* temp = top;
 
 	for (int i = 0; i < index; i++)
 		temp = temp->next;
@@ -161,7 +164,7 @@ Figure* OpenStack<Figure>::operator[](int index) const
 template<class Figure>
 void OpenStack<Figure>::print() const
 {
-	StackElement* temp = top;
+	StackElement<Figure>* temp = top;
 	POINT print_point;
 
 	while (temp != NULL)
